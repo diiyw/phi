@@ -380,3 +380,37 @@ func TestRefreshSessionListKeepsOpenPickerInPlace(t *testing.T) {
 	c.RefreshSessionList([]session.SessionMeta{{ID: "a"}}, "")
 	assert.False(t, c.listPicker.Open)
 }
+
+// fakePromptHistory is an in-memory PromptHistory for the composer tests.
+type fakePromptHistory struct{ entries []string }
+
+func (f *fakePromptHistory) Entries() []string { return append([]string(nil), f.entries...) }
+
+func (f *fakePromptHistory) Append(text string) error {
+	f.entries = append(f.entries, text)
+	return nil
+}
+
+func TestRememberPromptSkipsCommands(t *testing.T) {
+	c, _ := wiredComposer(t)
+	h := &fakePromptHistory{}
+	c.SetPromptHistory(h)
+
+	c.Chat.OnSubmit("hello")
+	c.Chat.OnSubmit("/new")
+	c.Chat.OnSubmit("!ls")
+	c.Chat.OnSubmit("   ")
+
+	assert.Equal(t, []string{"hello"}, h.entries)
+	assert.Equal(t, []string{"hello"}, c.Chat.History, "the recall ring follows the store")
+}
+
+func TestSetPromptHistoryLoadsExisting(t *testing.T) {
+	c, _ := wiredComposer(t)
+	c.SetPromptHistory(&fakePromptHistory{entries: []string{"one", "two"}})
+	assert.Equal(t, []string{"one", "two"}, c.Chat.History)
+
+	// A nil store leaves recall untouched (no session directory case).
+	c.SetPromptHistory(nil)
+	assert.Equal(t, []string{"one", "two"}, c.Chat.History)
+}

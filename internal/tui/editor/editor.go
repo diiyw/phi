@@ -102,6 +102,9 @@ func NewEditor(
 			))
 		}
 	}
+	if dir := ctrl.SessionDir(); dir != "" {
+		e.composer.SetPromptHistory(shellhist.NewPromptHistory(dir))
+	}
 	e.transcript = transcript.NewTranscriptPane(theme, e.footer.Spinner(), "Phi "+version.Version)
 	e.transcript.SetUsageCallback(e.footer.UpdateTokenDisplay)
 	e.footer.BindComposer(e.composer)

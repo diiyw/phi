@@ -10,6 +10,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+- Composer recalls the last 10 submitted prompts per project with Up/Down (or
+  Ctrl+P/Ctrl+N), persisted under the project's session directory. Slash and
+  shell commands are not recorded.
+
 ### Changed
 
 ### Deprecated
