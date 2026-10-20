@@ -47,7 +47,7 @@ func TestPromptHistoryTruncatesLongEntry(t *testing.T) {
 	// Cut on a rune boundary, so the length is a multiple of the rune width and
 	// never exceeds the budget.
 	assert.LessOrEqual(t, len(entries[0]), maxPromptBytes)
-	assert.Positive(t, len(entries[0]))
+	assert.NotEmpty(t, entries[0])
 	assert.Zero(t, len(entries[0])%len("字"))
 	assert.True(t, strings.HasPrefix(entries[0], "字"))
 	assert.True(t, utf8.ValidString(entries[0]))
