@@ -176,8 +176,7 @@ submitted prompts for the workspace are kept in `prompts.json` next to
 `history.jsonl`, and Up/Down (or Ctrl+P/Ctrl+N) walk them in the composer; slash
 and shell commands are not recorded. Recording prompts writes a file under the
 home directory, so the default is off and nothing is written unless the switch
-is set. While it is on, the welcome screen adds an Up/Down hint and `?` lists the
-recall keys.
+is set. While it is on, `?` lists the recall keys.
 
 The `internal/session/shellhist` store reads a bounded tail and caches records, refreshing
 from appended bytes and reloading after replacement or truncation. History files

@@ -16,9 +16,6 @@ type Screen struct {
 	// Brand is the product name in the hero line (default "phi").
 	Brand string
 	Hint  string // optional tip under the help line; empty uses the default
-	// Tips are extra lines under the hint, one wrapped block per entry. Callers
-	// use them for opt-in feature hints that must not show by default.
-	Tips []string
 }
 
 func (w *Screen) brand() string {
@@ -29,16 +26,12 @@ func (w *Screen) brand() string {
 }
 
 func (w *Screen) hintLines() []string {
-	lines := wrapHint(w.Hint, 48)
-	if len(lines) == 0 {
-		lines = []string{
-			"Type a message below and press Enter to start",
-		}
+	if w.Hint != "" {
+		return wrapHint(w.Hint, 48)
 	}
-	for _, tip := range w.Tips {
-		lines = append(lines, wrapHint(tip, 48)...)
+	return []string{
+		"Type a message below and press Enter to start",
 	}
-	return lines
 }
 
 func wrapHint(s string, width int) []string {
