@@ -389,7 +389,10 @@ func TestQuestionShortcutItemsHideRecallByDefault(t *testing.T) {
 	assert.Empty(t, filterQuestionItems("Up/Down", off))
 
 	on := questionShortcutItems(true)
-	assert.Len(t, filterQuestionItems("recall", on), 2)
+	recall := filterQuestionItems("recall", on)
+	require.Len(t, recall, 1)
+	assert.Equal(t, "Up/Down, Ctrl+P/Ctrl+N", recall[0].Path)
+	assert.Len(t, filterQuestionItems("ctrl+n", on), 1, "either key form finds the row")
 }
 
 // fakePromptHistory is an in-memory PromptHistory for the composer tests.

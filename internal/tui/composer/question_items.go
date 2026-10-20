@@ -25,8 +25,7 @@ func questionShortcutItems(promptRecall bool) []mention.Item {
 	}
 	if promptRecall {
 		items = append(items,
-			mention.Item{Path: "Up/Down", Description: "recall recent prompts"},
-			mention.Item{Path: "Ctrl+P/Ctrl+N", Description: "recall recent prompts"},
+			mention.Item{Path: "Up/Down, Ctrl+P/Ctrl+N", Description: "recall recent prompts"},
 		)
 	}
 	return items
