@@ -83,6 +83,15 @@ func NewTranscriptPane(theme components.Theme, spin *status.Spinner, brand strin
 	return t
 }
 
+// AddWelcomeTip appends a hint line under the welcome help text. Callers use it
+// for opt-in feature hints that should not appear on a default run.
+func (t *TranscriptPane) AddWelcomeTip(tip string) {
+	if t == nil || tip == "" {
+		return
+	}
+	t.welcome.Tips = append(t.welcome.Tips, tip)
+}
+
 // SetUsageCallback fires when an assistant message reports token usage.
 func (t *TranscriptPane) SetUsageCallback(fn func(session.TokenUsage)) {
 	if t != nil {

@@ -866,7 +866,7 @@ func (c *ComposerPane) onQuestionChange(active bool, query string) {
 	c.abandonMentionSearch()
 	c.slash.Hide()
 	c.Chat.SlashOpen = false
-	items := filterQuestionItems(query, questionShortcutItems())
+	items := filterQuestionItems(query, questionShortcutItems(c.promptHistory != nil))
 	status := ""
 	if len(items) == 0 {
 		status = "No matching shortcuts"

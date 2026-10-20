@@ -11,6 +11,12 @@ import (
 )
 
 const (
+	// EnvPrompts is the opt-in switch for composer prompt recall:
+	// PHI_PROMPT_HISTORY=on. Recording prompts writes a new file under the
+	// user's home directory, so the feature stays off until the user asks for
+	// it, and nothing is written on a plain run.
+	EnvPrompts = "PHI_PROMPT_HISTORY"
+
 	// maxPrompts is how many user inputs the composer can recall.
 	maxPrompts = 10
 	// maxPromptBytes caps a single recalled input. A longer prompt is truncated
@@ -18,6 +24,17 @@ const (
 	maxPromptBytes = 64 << 10
 	promptFile     = "prompts.json"
 )
+
+// PromptsEnabled reports whether prompt recall should be wired up at all. The
+// switch is intentionally default-off: on is the only state that may create
+// prompt history files.
+func PromptsEnabled() bool {
+	switch strings.ToLower(strings.TrimSpace(os.Getenv(EnvPrompts))) {
+	case "1", "true", "on", "yes":
+		return true
+	}
+	return false
+}
 
 // promptDoc is the on-disk shape. A single JSON object keeps the replacement
 // atomic and the file human-inspectable.

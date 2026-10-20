@@ -381,6 +381,17 @@ func TestRefreshSessionListKeepsOpenPickerInPlace(t *testing.T) {
 	assert.False(t, c.listPicker.Open)
 }
 
+// TestQuestionShortcutItemsHideRecallByDefault keeps Up/Down out of `?` unless
+// the recall store is wired, since the keys do nothing otherwise.
+func TestQuestionShortcutItemsHideRecallByDefault(t *testing.T) {
+	off := questionShortcutItems(false)
+	assert.Empty(t, filterQuestionItems("recall", off))
+	assert.Empty(t, filterQuestionItems("Up/Down", off))
+
+	on := questionShortcutItems(true)
+	assert.Len(t, filterQuestionItems("recall", on), 2)
+}
+
 // fakePromptHistory is an in-memory PromptHistory for the composer tests.
 type fakePromptHistory struct{ entries []string }
 

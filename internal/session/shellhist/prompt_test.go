@@ -12,6 +12,22 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestPromptsEnabledDefaultsOff(t *testing.T) {
+	t.Setenv(EnvPrompts, "")
+	assert.False(t, PromptsEnabled(), "prompt recall must stay off unless explicitly enabled")
+}
+
+func TestPromptsEnabledAcceptsOnValues(t *testing.T) {
+	for _, v := range []string{"1", "true", "on", "yes", "ON", " True "} {
+		t.Setenv(EnvPrompts, v)
+		assert.True(t, PromptsEnabled(), v)
+	}
+	for _, v := range []string{"0", "false", "off", "no", "enabled"} {
+		t.Setenv(EnvPrompts, v)
+		assert.False(t, PromptsEnabled(), v)
+	}
+}
+
 func TestPromptHistoryRoundTrip(t *testing.T) {
 	dir := t.TempDir()
 	h := NewPromptHistory(dir)
